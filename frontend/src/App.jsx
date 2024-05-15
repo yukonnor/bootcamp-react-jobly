@@ -23,7 +23,7 @@ function App() {
             let response = await await JoblyApi.request("jobs");
             console.log(response);
         }
-        getJobs();
+        // getJobs();
         setIsLoading(false);
     }, []);
 

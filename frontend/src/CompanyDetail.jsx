@@ -1,7 +1,13 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 function CompanyDetail() {
-    return <h1>Company Detail</h1>;
+    const { companyHandle } = useParams();
+    return (
+        <div>
+            <h1>Company Detail</h1>
+            <p>{companyHandle}</p>
+        </div>
+    );
 }
 
 export default CompanyDetail;
