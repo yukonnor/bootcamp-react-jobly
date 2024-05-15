@@ -21,7 +21,6 @@ function App() {
     useEffect(() => {
         async function getJobs() {
             let response = await await JoblyApi.request("jobs");
-            console.log(response);
         }
         // getJobs();
         setIsLoading(false);
