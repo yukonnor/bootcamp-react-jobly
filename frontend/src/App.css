@@ -32,9 +32,17 @@
 }
 
 .card {
-    padding: 2em;
+    padding: 0.5em;
+    margin: 1em;
+    text-align: left;
 }
 
-.read-the-docs {
-    color: #888;
+.card p {
+    margin: 0;
+}
+
+.card button {
+    display: block;
+    margin-left: auto;
+    margin-right: 0;
 }

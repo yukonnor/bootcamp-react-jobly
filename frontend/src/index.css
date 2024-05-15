@@ -28,6 +28,7 @@ body {
     place-items: flex-start;
     min-width: 320px;
     min-height: 100vh;
+    background-color: gainsboro;
 }
 
 h1 {

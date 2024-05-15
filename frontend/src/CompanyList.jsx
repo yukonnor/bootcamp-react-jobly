@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import CompanyCard from "./CompanyCard";
 
 function CompanyList({ companies }) {
-    console.log("companies prop: ", companies);
     return (
         <div className="CompanyList">
             {companies.map((company) => (
