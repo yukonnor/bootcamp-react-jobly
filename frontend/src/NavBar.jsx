@@ -11,13 +11,19 @@ function NavBar() {
 
             <Nav className="ml-auto" navbar>
                 <NavItem>
-                    <NavLink to="/snacks">Snacks</NavLink>
+                    <NavLink to="/login">Login</NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink to="/drinks">Drinks</NavLink>
+                    <NavLink to="/signup">Signup</NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink to="/new">Add Item</NavLink>
+                    <NavLink to="/companies">Companies</NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink to="/jobs">Jobs</NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink to="/profile">Profile</NavLink>
                 </NavItem>
             </Nav>
         </Navbar>
