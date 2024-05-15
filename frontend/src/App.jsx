@@ -1,9 +1,14 @@
 import { useState, useEffect } from "react";
+import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 import JoblyApi from "../api.js";
 import "./App.css";
 
+// Route Components
+import Home from "./Home";
+import NavBar from "./NavBar";
+
 function App() {
-    const [count, setCount] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
 
     /* useEffect to get menue items from db.json upon inital render */
 
@@ -13,15 +18,24 @@ function App() {
             console.log(response);
         }
         getJobs();
+        setIsLoading(false);
     }, []);
 
+    if (isLoading) {
+        return <p>Loading &hellip;</p>;
+    }
+
     return (
-        <>
-            <h1>React Jobly</h1>
-            <div className="card">
-                <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-            </div>
-        </>
+        <div className="App">
+            <BrowserRouter>
+                <NavBar />
+                <main>
+                    <Routes>
+                        <Route exact path="/" element={<Home />} />
+                    </Routes>
+                </main>
+            </BrowserRouter>
+        </div>
     );
 }
 
