@@ -55,7 +55,7 @@ function App() {
     return (
         <div className="App">
             <BrowserRouter>
-                <NavBar />
+                <NavBar user={user} setUser={setUser} />
                 <main>
                     <Routes>
                         <Route exact path="/" element={<Home user={user} />} />
