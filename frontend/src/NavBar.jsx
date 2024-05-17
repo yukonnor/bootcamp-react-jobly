@@ -24,7 +24,7 @@ function NavBar({ user, setUser }) {
                     </NavItem>
                     <NavItem>
                         <NavLink to="/" onClick={handleLogOut}>
-                            Log Out
+                            {`Log Out (${user.username})`}
                         </NavLink>
                     </NavItem>
                 </Nav>

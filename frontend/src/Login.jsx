@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { Card, Form, FormGroup, Label, Input, Button, Alert } from "reactstrap";
 
 /** Form for authenticating / logging in a user
  *
  */
 
-const Login = ({ authUser }) => {
+const Login = ({ user, authUser }) => {
     const INITIAL_STATE = { username: "testadmin", password: "password" };
     const [formData, setFormData] = useState(INITIAL_STATE);
     const [error, setError] = useState();
@@ -29,7 +29,7 @@ const Login = ({ authUser }) => {
         if (response.token) {
             navigate("/");
         } else {
-            setError("Invalid username/password.");
+            setError(response.message);
         }
     };
 
@@ -42,6 +42,11 @@ const Login = ({ authUser }) => {
             [name]: value,
         }));
     };
+
+    // if user is logged in, redirect to home screen
+    if (user.token) {
+        return <Navigate to="/" />;
+    }
 
     /** Render form. After form submitted, show a success alert with link to home page. */
 

@@ -45,11 +45,22 @@ class JoblyApi {
         return res.company;
     }
 
-    /** Authenticate user (returns {token}) */
+    /** Authenticate user
+     *  returns: {token}) */
 
     static async authenticate(username, password) {
         console.log("in API.authenticate()...");
         let res = await this.request("auth/token", { username, password }, "post");
+        return res;
+    }
+
+    /** Register user
+     *  accepts: userObj { username, password, firstName, lastName, email }
+     *  returns: {token} */
+
+    static async register(userObj) {
+        console.log("in API.register()...");
+        let res = await this.request("auth/register", userObj, "post");
         return res;
     }
 }

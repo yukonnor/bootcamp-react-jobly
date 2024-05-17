@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 import JoblyApi from "../api.js";
+import useLocalStorage from "./hooks/useLocalStorage";
 import "./App.css";
 
 // Route Components
@@ -15,7 +16,7 @@ import UserProfile from "./UserProfile.jsx";
 
 function App() {
     const [isLoading, setIsLoading] = useState(true);
-    const [user, setUser] = useState({});
+    const [user, setUser] = useLocalStorage("user", {});
 
     /* useEffect to get menue items from db.json upon inital render */
 
@@ -37,13 +38,25 @@ function App() {
     //     authUser();
     // }, []);
 
-    /* authUser to authenticate username + password from login form*/
+    /* authUser to authenticate username + password from Login form*/
 
     async function authUser(username, password) {
         let response = await await JoblyApi.authenticate(username, password);
-        console.log("authUer response:", response);
+        console.log("authUser response:", response);
         if (response && response.token) {
             setUser((user) => ({ username, ...response }));
+        }
+        return response;
+    }
+
+    /* registerUser to create a user from Signup form
+    /  userObj is: { username, password, firstName, lastName, email } */
+
+    async function registerUser(userObj) {
+        let response = await await JoblyApi.register(userObj);
+        console.log("registerUser response:", response);
+        if (response && response.token) {
+            setUser((user) => ({ username: userObj.username, ...response }));
         }
         return response;
     }
@@ -62,8 +75,16 @@ function App() {
                         <Route exact path="/companies" element={<Companies />} />
                         <Route exact path="/companies/:companyHandle" element={<CompanyDetail />} />
                         <Route exact path="/jobs" element={<Jobs />} />
-                        <Route exact path="/login" element={<Login authUser={authUser} />} />
-                        <Route exact path="/signup" element={<Signup />} />
+                        <Route
+                            exact
+                            path="/login"
+                            element={<Login user={user} authUser={authUser} />}
+                        />
+                        <Route
+                            exact
+                            path="/signup"
+                            element={<Signup user={user} registerUser={registerUser} />}
+                        />
                         <Route exact path="/profile" element={<UserProfile />} />
                     </Routes>
                 </main>
