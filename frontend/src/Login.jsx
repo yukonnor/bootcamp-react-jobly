@@ -7,7 +7,7 @@ import { Card, Form, FormGroup, Label, Input, Button, Alert } from "reactstrap";
  */
 
 const Login = ({ user, authUser }) => {
-    const INITIAL_STATE = { username: "testadmin", password: "password" };
+    const INITIAL_STATE = { username: "", password: "" };
     const [formData, setFormData] = useState(INITIAL_STATE);
     const [error, setError] = useState();
     const navigate = useNavigate();
