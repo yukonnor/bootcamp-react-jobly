@@ -109,7 +109,13 @@ const Signup = ({ user, registerUser }) => {
                         ></Input>
                     </FormGroup>
 
-                    {error ? <Alert color="danger">{error}</Alert> : null}
+                    {error ? (
+                        <Alert color="danger">
+                            {error.map((e) => (
+                                <p key={e}>{e}</p>
+                            ))}
+                        </Alert>
+                    ) : null}
 
                     <Button color="primary">Sign Up</Button>
                 </Form>

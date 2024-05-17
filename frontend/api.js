@@ -28,11 +28,8 @@ class JoblyApi {
         } catch (err) {
             console.error("API Error:", err.response);
             let message = err.response.data.error.message;
-            if (err.response.status === 401) {
-                return err.response.data.error;
-            } else {
-                throw Array.isArray(message) ? message : [message];
-            }
+            return err.response.data.error;
+            // throw Array.isArray(message) ? message : [message];
         }
     }
 
