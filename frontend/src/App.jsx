@@ -61,6 +61,30 @@ function App() {
         return response;
     }
 
+    /* getUser to get a user from backend from a username
+    /  userObj is: { username, password, firstName, lastName, email } */
+
+    async function getUser(username, token) {
+        let response = await await JoblyApi.getUser(username, token);
+        console.log("getUser response:", response);
+        // if (response && response.token) {
+        //     setUser((user) => ({ username: userObj.username, ...response }));
+        // }
+        return response;
+    }
+
+    /* updateUser to update a user from Profile form
+    /  userObj is: { username, password, firstName, lastName, email } */
+
+    async function updateUser(userObj) {
+        let response = await await JoblyApi.register(userObj);
+        console.log("registerUser response:", response);
+        if (response && response.token) {
+            setUser((user) => ({ username: userObj.username, ...response }));
+        }
+        return response;
+    }
+
     if (isLoading) {
         return <p>Loading &hellip;</p>;
     }
@@ -89,7 +113,17 @@ function App() {
                             path="/signup"
                             element={<Signup user={user} registerUser={registerUser} />}
                         />
-                        <Route exact path="/profile" element={<UserProfile />} />
+                        <Route
+                            exact
+                            path="/profile"
+                            element={
+                                <UserProfile
+                                    user={user}
+                                    getUser={getUser}
+                                    updateUser={updateUser}
+                                />
+                            }
+                        />
                     </Routes>
                 </main>
             </BrowserRouter>
