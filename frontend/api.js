@@ -63,23 +63,35 @@ class JoblyApi {
 
     /** Get user
      *  accepts: username, token
-     *  returns: { username, firstName, lastName, email, isAdmin } */
+     *  returns: { applications, username, firstName, lastName, email, isAdmin } */
 
     static async getUser(username, token) {
         console.log("in API.getUser()...", username, token);
         this.token = token;
         let res = await this.request(`users/${username}`, {}, "get");
-        return res;
+        // console.log("API.getUser() res:", res);
+        return res.user;
     }
 
     /** Update user
-     *  accepts: { firstName, lastName, password, email }
+     *  accepts: username, token, { firstName, lastName, password, email }
      *  returns: { username, firstName, lastName, email, isAdmin } */
 
     static async updateUser(username, token, dataToUpdate) {
         console.log("in API.updateUser()...", username, token);
         this.token = token;
         let res = await this.request(`users/${username}`, dataToUpdate, "patch");
+        return res;
+    }
+
+    /** Apply to Job
+     *  accepts: username, jobId, token
+     *  returns: {"applied": jobId}*/
+
+    static async applyToJob(username, token, jobId) {
+        console.log("in API.applyToJob()...");
+        this.token = token;
+        let res = await this.request(`users/${username}/jobs/${jobId}`, {}, "post");
         return res;
     }
 }

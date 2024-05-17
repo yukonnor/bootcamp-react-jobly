@@ -4,7 +4,7 @@ import { Button, Form, Input } from "reactstrap";
 import JoblyApi from "../api";
 import JobList from "./JobList";
 
-function Jobs({ user }) {
+function Jobs({ user, applyToJob }) {
     const [isLoading, setIsLoading] = useState(true);
     const [jobs, setJobs] = useState([]);
     const [searchParams, setSearchParams] = useState({});
@@ -68,7 +68,7 @@ function Jobs({ user }) {
                 />
                 <Button>Search</Button>
             </Form>
-            <JobList jobs={jobs} />
+            <JobList jobs={jobs} applyToJob={applyToJob} />
         </div>
     );
 }

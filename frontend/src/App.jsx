@@ -4,6 +4,9 @@ import JoblyApi from "../api.js";
 import useLocalStorage from "./hooks/useLocalStorage";
 import "./App.css";
 
+// Context
+import AppliedJobsContext from "./AppliedJobsContext.jsx";
+
 // Route Components
 import NavBar from "./NavBar";
 import Home from "./Home";
@@ -17,35 +20,30 @@ import UserProfile from "./UserProfile.jsx";
 function App() {
     const [isLoading, setIsLoading] = useState(true);
     const [user, setUser] = useLocalStorage("user", {});
+    const [appliedJobs, setAppliedJobs] = useState([]);
 
-    /* useEffect to get menue items from db.json upon inital render */
+    /* useEffect to get get list of applied jobs upon initial render */
 
     useEffect(() => {
-        async function getJobs() {
-            let response = await await JoblyApi.request("jobs");
+        async function getAppliedJobs(username) {
+            const response = await getUser(user.username, user.token);
+            const appliedJobs = response.applications;
+            setAppliedJobs(appliedJobs);
+            setIsLoading(false);
         }
-        // getJobs();
-        setIsLoading(false);
+        getAppliedJobs(false);
     }, []);
-
-    /* useEffect to test user auth */
-
-    // useEffect(() => {
-    //     async function authUser() {
-    //         let response = await await JoblyApi.authenticate("testadmin", "password");
-    //         setUser((user) => ({ username: "testadmin", ...response }));
-    //     }
-    //     authUser();
-    // }, []);
 
     /* authUser to authenticate username + password from Login form*/
 
     async function authUser(username, password) {
+        setIsLoading(true);
         let response = await await JoblyApi.authenticate(username, password);
         console.log("authUser response:", response);
         if (response && response.token) {
             setUser((user) => ({ username, ...response }));
         }
+        setIsLoading(false);
         return response;
     }
 
@@ -53,11 +51,13 @@ function App() {
     /  userObj is: { username, password, firstName, lastName, email } */
 
     async function registerUser(userObj) {
+        setIsLoading(true);
         let response = await await JoblyApi.register(userObj);
         console.log("registerUser response:", response);
         if (response && response.token) {
             setUser((user) => ({ username: userObj.username, ...response }));
         }
+        setIsLoading(false);
         return response;
     }
 
@@ -65,11 +65,13 @@ function App() {
     /  userObj is: { username, password, firstName, lastName, email } */
 
     async function getUser(username, token) {
+        setIsLoading(true);
         let response = await await JoblyApi.getUser(username, token);
         console.log("getUser response:", response);
         // if (response && response.token) {
         //     setUser((user) => ({ username: userObj.username, ...response }));
         // }
+        setIsLoading(false);
         return response;
     }
 
@@ -77,12 +79,28 @@ function App() {
     /  userObj is: { username, password, firstName, lastName, email } */
 
     async function updateUser(username, token, dataToUpdate) {
+        setIsLoading(true);
         let response = await await JoblyApi.updateUser(username, token, dataToUpdate);
         console.log("updateUser response:", response);
         // if (response && response.token) {
         //     setUser((user) => ({ username: userObj.username, ...response }));
         // }
+        setIsLoading(false);
         return response.user;
+    }
+
+    /* applyToJob allows the current user to create a job application for a job
+    /  userObj is: { username, password, firstName, lastName, email }
+    /  returns: {"applied": jobId}
+     */
+
+    async function applyToJob(jobId) {
+        let response = await await JoblyApi.applyToJob(user.username, user.token, jobId);
+        console.log("applyToJob response:", response);
+        if (response && response.applied) {
+            setAppliedJobs((appliedJobs) => [...appliedJobs, response.applied]);
+        }
+        return response;
     }
 
     if (isLoading) {
@@ -94,37 +112,43 @@ function App() {
             <BrowserRouter>
                 <NavBar user={user} setUser={setUser} />
                 <main>
-                    <Routes>
-                        <Route exact path="/" element={<Home user={user} />} />
-                        <Route exact path="/companies" element={<Companies user={user} />} />
-                        <Route
-                            exact
-                            path="/companies/:companyHandle"
-                            element={<CompanyDetail user={user} />}
-                        />
-                        <Route exact path="/jobs" element={<Jobs user={user} />} />
-                        <Route
-                            exact
-                            path="/login"
-                            element={<Login user={user} authUser={authUser} />}
-                        />
-                        <Route
-                            exact
-                            path="/signup"
-                            element={<Signup user={user} registerUser={registerUser} />}
-                        />
-                        <Route
-                            exact
-                            path="/profile"
-                            element={
-                                <UserProfile
-                                    user={user}
-                                    getUser={getUser}
-                                    updateUser={updateUser}
-                                />
-                            }
-                        />
-                    </Routes>
+                    <AppliedJobsContext.Provider value={appliedJobs}>
+                        <Routes>
+                            <Route exact path="/" element={<Home user={user} />} />
+                            <Route exact path="/companies" element={<Companies user={user} />} />
+                            <Route
+                                exact
+                                path="/companies/:companyHandle"
+                                element={<CompanyDetail user={user} applyToJob={applyToJob} />}
+                            />
+                            <Route
+                                exact
+                                path="/jobs"
+                                element={<Jobs user={user} applyToJob={applyToJob} />}
+                            />
+                            <Route
+                                exact
+                                path="/login"
+                                element={<Login user={user} authUser={authUser} />}
+                            />
+                            <Route
+                                exact
+                                path="/signup"
+                                element={<Signup user={user} registerUser={registerUser} />}
+                            />
+                            <Route
+                                exact
+                                path="/profile"
+                                element={
+                                    <UserProfile
+                                        user={user}
+                                        getUser={getUser}
+                                        updateUser={updateUser}
+                                    />
+                                }
+                            />
+                        </Routes>
+                    </AppliedJobsContext.Provider>
                 </main>
             </BrowserRouter>
         </div>
