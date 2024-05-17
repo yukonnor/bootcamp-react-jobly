@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
-import { Button, Form, Input } from "reactstrap";
+import { Button, Form, Input, Row, Col } from "reactstrap";
 import JoblyApi from "../api";
 import JobList from "./JobList";
 
@@ -59,14 +59,20 @@ function Jobs({ user, applyToJob }) {
         <div>
             <h1>Jobs</h1>
             <Form onSubmit={handleSearch}>
-                <Input
-                    id="search"
-                    name="search"
-                    type="text"
-                    placeholder="Search..."
-                    onChange={handleChange}
-                />
-                <Button>Search</Button>
+                <Row className="row-cols-lg-auto g-3 align-items-center">
+                    <Col>
+                        <Input
+                            id="search"
+                            name="search"
+                            type="text"
+                            placeholder="Search..."
+                            onChange={handleChange}
+                        />
+                    </Col>
+                    <Col>
+                        <Button>Search</Button>
+                    </Col>
+                </Row>
             </Form>
             <JobList jobs={jobs} applyToJob={applyToJob} />
         </div>
