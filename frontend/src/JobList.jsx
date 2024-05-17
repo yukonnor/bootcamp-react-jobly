@@ -5,8 +5,6 @@ import AppliedJobsContext from "./AppliedJobsContext";
 function JobList({ jobs, applyToJob }) {
     const appliedJobs = useContext(AppliedJobsContext);
 
-    console.log("JobList appliedJobs: ", appliedJobs);
-
     return (
         <div className="JobList">
             {jobs.map((job) => {

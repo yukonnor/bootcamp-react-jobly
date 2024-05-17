@@ -39,7 +39,6 @@ function App() {
     async function authUser(username, password) {
         setIsLoading(true);
         let response = await await JoblyApi.authenticate(username, password);
-        console.log("authUser response:", response);
         if (response && response.token) {
             setUser((user) => ({ username, ...response }));
         }
@@ -53,7 +52,6 @@ function App() {
     async function registerUser(userObj) {
         setIsLoading(true);
         let response = await await JoblyApi.register(userObj);
-        console.log("registerUser response:", response);
         if (response && response.token) {
             setUser((user) => ({ username: userObj.username, ...response }));
         }
@@ -67,10 +65,6 @@ function App() {
     async function getUser(username, token) {
         setIsLoading(true);
         let response = await await JoblyApi.getUser(username, token);
-        console.log("getUser response:", response);
-        // if (response && response.token) {
-        //     setUser((user) => ({ username: userObj.username, ...response }));
-        // }
         setIsLoading(false);
         return response;
     }
@@ -81,10 +75,6 @@ function App() {
     async function updateUser(username, token, dataToUpdate) {
         setIsLoading(true);
         let response = await await JoblyApi.updateUser(username, token, dataToUpdate);
-        console.log("updateUser response:", response);
-        // if (response && response.token) {
-        //     setUser((user) => ({ username: userObj.username, ...response }));
-        // }
         setIsLoading(false);
         return response.user;
     }
@@ -96,7 +86,6 @@ function App() {
 
     async function applyToJob(jobId) {
         let response = await await JoblyApi.applyToJob(user.username, user.token, jobId);
-        console.log("applyToJob response:", response);
         if (response && response.applied) {
             setAppliedJobs((appliedJobs) => [...appliedJobs, response.applied]);
         }

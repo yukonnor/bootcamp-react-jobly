@@ -14,7 +14,6 @@ function CompanyDetail({ user, applyToJob }) {
     useEffect(() => {
         async function getCompany() {
             let response = await await JoblyApi.getCompany(companyHandle);
-            console.log("getCompany response:", response);
             setCompany(response);
             setJobs(response.jobs);
             return response;

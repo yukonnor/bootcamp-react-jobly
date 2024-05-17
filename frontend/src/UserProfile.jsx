@@ -7,7 +7,7 @@ import { Card, Form, FormGroup, Label, Input, Button, Alert } from "reactstrap";
  */
 
 const UserProfile = ({ user, getUser, updateUser }) => {
-    const INITIAL_STATE = { username: "", password: "", firstName: "", lastName: "", email: "" };
+    const INITIAL_STATE = { username: "", firstName: "", lastName: "", email: "" };
     const [isLoading, setIsLoading] = useState(true);
     const [formData, setFormData] = useState(INITIAL_STATE);
     const [submitMsg, setSubmitMsg] = useState();
@@ -17,13 +17,11 @@ const UserProfile = ({ user, getUser, updateUser }) => {
 
     useEffect(() => {
         async function setProfileInfo() {
-            const response = await getUser(user.username, user.token);
-            const userInfo = response.user;
+            const userInfo = await getUser(user.username, user.token);
             setIsLoading(false);
             setFormData({
                 ...formData,
                 username: userInfo.username,
-                password: "xxxxxxx",
                 firstName: userInfo.firstName,
                 lastName: userInfo.lastName,
                 email: userInfo.email,
@@ -42,14 +40,15 @@ const UserProfile = ({ user, getUser, updateUser }) => {
 
         const dataToUpdate = { ...formData };
         delete dataToUpdate.username;
+
+        console.log("handleSubmit args: ", user.username, user.token, dataToUpdate);
         const response = await updateUser(user.username, user.token, dataToUpdate);
 
-        console.log("handleSubmit update user response: ", response);
-
         // based on response, navigate home or show error
-        if (response.username) {
+        if (response && response.username) {
             setSubmitMsg({ alertType: "success", message: ["Profile updated!"] });
         } else {
+            console.log("response: ", response);
             setSubmitMsg({ alertType: "danger", message: response.message });
         }
     };
@@ -87,17 +86,6 @@ const UserProfile = ({ user, getUser, updateUser }) => {
                             type="text"
                             value={user.username}
                             disabled
-                        ></Input>
-                    </FormGroup>
-
-                    <FormGroup>
-                        <Label for="password">Password</Label>
-                        <Input
-                            id="password"
-                            name="password"
-                            type="password"
-                            value={formData.password}
-                            onChange={handleChange}
                         ></Input>
                     </FormGroup>
 
