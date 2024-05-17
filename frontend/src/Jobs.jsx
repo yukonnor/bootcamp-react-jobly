@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { Button, Form, Input } from "reactstrap";
 import JoblyApi from "../api";
 import JobList from "./JobList";
 
-function Jobs() {
+function Jobs({ user }) {
     const [isLoading, setIsLoading] = useState(true);
     const [jobs, setJobs] = useState([]);
     const [searchParams, setSearchParams] = useState({});
@@ -45,6 +45,11 @@ function Jobs() {
             [name]: value,
         }));
     };
+
+    // if user is logged out, redirect to home screen
+    if (!user.token) {
+        return <Navigate to="/" />;
+    }
 
     if (isLoading) {
         return <p>Loading &hellip;</p>;

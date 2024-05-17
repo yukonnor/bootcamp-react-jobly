@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import JoblyApi from "../api";
 
-function CompanyDetail() {
+function CompanyDetail({ user }) {
     const [isLoading, setIsLoading] = useState(true);
     const [company, setCompany] = useState([]);
     const { companyHandle } = useParams();
@@ -19,6 +19,11 @@ function CompanyDetail() {
         getCompany();
         setIsLoading(false);
     }, []);
+
+    // if user is logged out, redirect to home screen
+    if (!user.token) {
+        return <Navigate to="/" />;
+    }
 
     if (isLoading) {
         return <p>Loading &hellip;</p>;

@@ -72,9 +72,13 @@ function App() {
                 <main>
                     <Routes>
                         <Route exact path="/" element={<Home user={user} />} />
-                        <Route exact path="/companies" element={<Companies />} />
-                        <Route exact path="/companies/:companyHandle" element={<CompanyDetail />} />
-                        <Route exact path="/jobs" element={<Jobs />} />
+                        <Route exact path="/companies" element={<Companies user={user} />} />
+                        <Route
+                            exact
+                            path="/companies/:companyHandle"
+                            element={<CompanyDetail user={user} />}
+                        />
+                        <Route exact path="/jobs" element={<Jobs user={user} />} />
                         <Route
                             exact
                             path="/login"
