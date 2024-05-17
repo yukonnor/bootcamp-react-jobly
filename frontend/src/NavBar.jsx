@@ -5,7 +5,7 @@ import "./NavBar.css";
 function NavBar() {
     return (
         <Navbar expand="md">
-            <NavLink exact to="/" className="navbar-brand">
+            <NavLink exact="true" to="/" className="navbar-brand">
                 Jobly
             </NavLink>
 

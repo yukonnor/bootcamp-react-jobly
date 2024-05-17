@@ -28,7 +28,11 @@ class JoblyApi {
         } catch (err) {
             console.error("API Error:", err.response);
             let message = err.response.data.error.message;
-            throw Array.isArray(message) ? message : [message];
+            if (err.response.status === 401) {
+                return err.response.data.error;
+            } else {
+                throw Array.isArray(message) ? message : [message];
+            }
         }
     }
 
@@ -41,7 +45,13 @@ class JoblyApi {
         return res.company;
     }
 
-    // obviously, you'll add a lot here ...
+    /** Authenticate user (returns {token}) */
+
+    static async authenticate(username, password) {
+        console.log("in API.authenticate()...");
+        let res = await this.request("auth/token", { username, password }, "post");
+        return res;
+    }
 }
 
 // for now, put token ("testuser" / "password" on class)
