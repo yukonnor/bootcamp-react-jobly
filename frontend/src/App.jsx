@@ -76,13 +76,13 @@ function App() {
     /* updateUser to update a user from Profile form
     /  userObj is: { username, password, firstName, lastName, email } */
 
-    async function updateUser(userObj) {
-        let response = await await JoblyApi.register(userObj);
-        console.log("registerUser response:", response);
-        if (response && response.token) {
-            setUser((user) => ({ username: userObj.username, ...response }));
-        }
-        return response;
+    async function updateUser(username, token, dataToUpdate) {
+        let response = await await JoblyApi.updateUser(username, token, dataToUpdate);
+        console.log("updateUser response:", response);
+        // if (response && response.token) {
+        //     setUser((user) => ({ username: userObj.username, ...response }));
+        // }
+        return response.user;
     }
 
     if (isLoading) {

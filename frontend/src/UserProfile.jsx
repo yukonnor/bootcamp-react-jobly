@@ -40,14 +40,15 @@ const UserProfile = ({ user, getUser, updateUser }) => {
     const handleSubmit = async (evt) => {
         evt.preventDefault();
 
-        const userObj = formData;
-        const response = await updateUser(userObj);
+        const dataToUpdate = { ...formData };
+        delete dataToUpdate.username;
+        const response = await updateUser(user.username, user.token, dataToUpdate);
 
         console.log("handleSubmit update user response: ", response);
 
         // based on response, navigate home or show error
-        if (response.token) {
-            setSubmitMsg({ alertType: "success", message: response.message });
+        if (response.username) {
+            setSubmitMsg({ alertType: "success", message: ["Profile updated!"] });
         } else {
             setSubmitMsg({ alertType: "danger", message: response.message });
         }
@@ -141,7 +142,7 @@ const UserProfile = ({ user, getUser, updateUser }) => {
                         </Alert>
                     ) : null}
 
-                    <Button color="primary">Sign Up</Button>
+                    <Button color="primary">Update Profile</Button>
                 </Form>
             </Card>
         </>
