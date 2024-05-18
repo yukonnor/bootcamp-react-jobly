@@ -26,23 +26,33 @@ function App() {
 
     useEffect(() => {
         async function getAppliedJobs(username) {
-            const response = await getUser(user.username, user.token);
-            const appliedJobs = response.applications;
-            setAppliedJobs(appliedJobs);
+            if (user.username) {
+                console.log("In getAppliedJobs...username found.");
+                const response = await getUser(user.username, user.token);
+                const appliedJobs = response.applications;
+                setAppliedJobs(appliedJobs);
+            }
             setIsLoading(false);
+            console.log("App re-rendered from scratch!!!");
         }
-        getAppliedJobs(false);
+        getAppliedJobs(user.username);
     }, []);
+
+    useEffect(() => {
+        console.log("user state updated:", user);
+    }, [user]);
+
+    useEffect(() => {
+        console.log("appliedJobs state updated:", appliedJobs);
+    }, [appliedJobs]);
 
     /* authUser to authenticate username + password from Login form*/
 
     async function authUser(username, password) {
-        setIsLoading(true);
         let response = await await JoblyApi.authenticate(username, password);
         if (response && response.token) {
             setUser((user) => ({ username, ...response }));
         }
-        setIsLoading(false);
         return response;
     }
 
@@ -50,12 +60,10 @@ function App() {
     /  userObj is: { username, password, firstName, lastName, email } */
 
     async function registerUser(userObj) {
-        setIsLoading(true);
         let response = await await JoblyApi.register(userObj);
         if (response && response.token) {
             setUser((user) => ({ username: userObj.username, ...response }));
         }
-        setIsLoading(false);
         return response;
     }
 
@@ -63,9 +71,7 @@ function App() {
     /  userObj is: { username, password, firstName, lastName, email } */
 
     async function getUser(username, token) {
-        setIsLoading(true);
         let response = await await JoblyApi.getUser(username, token);
-        setIsLoading(false);
         return response;
     }
 
@@ -73,9 +79,7 @@ function App() {
     /  userObj is: { username, password, firstName, lastName, email } */
 
     async function updateUser(username, token, dataToUpdate) {
-        setIsLoading(true);
         let response = await await JoblyApi.updateUser(username, token, dataToUpdate);
-        setIsLoading(false);
         return response.user;
     }
 

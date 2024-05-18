@@ -24,9 +24,11 @@ class JoblyApi {
         const params = method === "get" ? data : {};
 
         try {
-            return (await axios({ url, method, data, params, headers })).data;
+            const response = await axios({ url, method, data, params, headers });
+            return response.data;
         } catch (err) {
-            console.error("API Error:", err.response);
+            console.log("Hello API Error!", err.response);
+            // console.error("API Error:", err.response);
             let message = err.response.data.error.message;
             return err.response.data.error;
             // throw Array.isArray(message) ? message : [message];

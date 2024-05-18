@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, Form, FormGroup, Label, Input, Button, Alert } from "reactstrap";
 
@@ -16,7 +16,7 @@ const Signup = ({ user, registerUser }) => {
      *  If successful: redirect to home page as logged in user
      *  If error: show error message */
 
-    const handleSubmit = async (evt) => {
+    async function handleSubmit(evt) {
         evt.preventDefault();
 
         const userObj = formData;
@@ -29,9 +29,20 @@ const Signup = ({ user, registerUser }) => {
         if (response.token) {
             navigate("/");
         } else {
+            console.log("Bad response!!!", response.message);
+            console.log("error state before:", error);
             setError(response.message);
+            console.log("error state after:", error);
         }
-    };
+    }
+
+    useEffect(() => {
+        console.log("error state:", error);
+    }, [error]);
+
+    useEffect(() => {
+        console.log("component re-rendered from scratch");
+    }, []);
 
     /** Update local state w/ current state of input element */
 
@@ -110,10 +121,13 @@ const Signup = ({ user, registerUser }) => {
                     </FormGroup>
 
                     {error ? (
+                        // <p>Error.</p>
                         <Alert color="danger">
-                            {error.map((e) => (
-                                <p key={e}>{e}</p>
-                            ))}
+                            {Array.isArray(error) ? (
+                                error.map((e) => <p key={e}>{e}</p>)
+                            ) : (
+                                <p>{error}</p>
+                            )}
                         </Alert>
                     ) : null}
 

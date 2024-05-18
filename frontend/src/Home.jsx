@@ -7,7 +7,7 @@ function Home({ user }) {
             <h1>React Jobly</h1>
             <p className="lead">All the jobs in one convenient place.</p>
             {user.token ? (
-                <h2> {`Welcome back, ${user.username}!`} </h2>
+                <h2> {`Welcome, ${user.username}!`} </h2>
             ) : (
                 <p>
                     <Link to="/login" className="btn btn-secondary me-3">
